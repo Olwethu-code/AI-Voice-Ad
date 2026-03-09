@@ -1,0 +1,156 @@
+Build a full-stack web application called **PromoVoice AI**.
+
+PromoVoice AI is a platform that allows businesses to generate professional radio-style voice advertisements with background music using AI.
+
+Users should be able to paste promotional text or upload promotional posters. The system will generate a professional advertisement script, convert it to voice, generate background music, and combine them into a downloadable MP3 advertisement.
+
+Tech Stack:
+
+Frontend
+React
+Tailwind CSS
+
+Backend
+Node.js
+Express.js
+Python microservice for AI audio generation
+
+AI Services
+
+OpenAI API for improving and generating advertisement scripts
+Tesseract OCR for extracting text from uploaded promotional images
+Coqui TTS for generating advertisement voice audio
+MusicGen for generating AI background music
+FFmpeg for mixing voice and music together
+
+Core Features
+
+1. Dashboard
+   Create a clean SaaS-style dashboard where users can generate promotional advertisements.
+
+2. Text Input
+   Provide a large text area where users can paste promotional text.
+
+Example:
+"Weekend sale! Buy one burger get one free."
+
+3. Poster/Image Upload
+   Allow users to upload promotional posters or images.
+
+Use OCR (Tesseract) to extract text from the image and send it to the script generator.
+
+4. AI Ad Script Generator
+   Send the extracted text or user input to OpenAI to convert it into a professional radio-style advertisement script.
+
+Example transformation:
+
+Input:
+"cheap burgers today come buy"
+
+Output:
+"Hungry? Come enjoy our delicious burgers today at an unbeatable price! Visit us now before the offer ends."
+
+5. Ad Duration Options
+   Allow users to select advertisement duration:
+
+15 seconds
+30 seconds
+60 seconds
+
+The AI should adjust the script length based on the selected duration.
+
+6. Voice Generation
+   Use Coqui TTS to convert the final advertisement script into voice audio.
+
+Generate a voice audio file such as voice.wav.
+
+Allow voice style options:
+
+Male
+Female
+Energetic promotional voice
+Calm narrator voice
+
+7. Background Music Generator
+   Use MusicGen to generate short instrumental background music.
+
+Allow users to select music style:
+
+Upbeat retail promotion
+Calm background
+Energetic commercial
+Corporate marketing
+
+Music length should match the ad duration.
+
+8. Audio Mixing
+   Use FFmpeg to mix the voice audio and background music together.
+
+Lower the music volume so the voice remains clear.
+
+Example mixing logic:
+
+voice.wav + music.wav → final-ad.mp3
+
+9. Audio Player
+   Display an audio player so users can listen to the generated advertisement.
+
+10. Download Feature
+    Allow users to download the final advertisement as an MP3 file.
+
+Download button:
+Download MP3 Advertisement
+
+11. Ad History
+    Store previously generated ads.
+
+Each record should include:
+
+Original input text
+Generated script
+Voice style
+Music style
+Ad duration
+Final audio file URL
+Date created
+
+12. UI Layout
+
+Header: PromoVoice AI
+
+Main dashboard sections:
+
+Text input
+Image upload
+Ad duration selector
+Voice style selector
+Music style selector
+Generate Ad button
+Audio player
+Download MP3 button
+Ad history list
+
+13. File Structure
+
+/frontend
+/components
+/pages
+/services
+
+/backend
+/routes
+/controllers
+/uploads
+
+/python-audio-service
+tts.py
+musicgen.py
+audio_mixer.py
+
+14. Styling
+
+Use Tailwind CSS to create a modern SaaS-style interface similar to AI tools.
+
+15. Provide setup instructions to run the application locally with npm install and npm run dev, and instructions to install FFmpeg and Python dependencies for Coqui TTS and MusicGen.
+
+The final result should generate a professional radio-style advertisement with voice and background music that users can play and download as an MP3 file.
