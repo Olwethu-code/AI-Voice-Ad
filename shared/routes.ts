@@ -36,6 +36,14 @@ export const api = {
         500: errorSchemas.internal,
       },
     },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/ads/:id' as const,
+      responses: {
+        204: z.void(),
+        404: errorSchemas.validation,
+      },
+    },
   }
 };
 

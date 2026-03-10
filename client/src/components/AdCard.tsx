@@ -1,16 +1,40 @@
 import React from "react";
-import { type AdResponse } from "@shared/routes";
+import { type AdResponse, api } from "@shared/routes";
 import { AudioPlayer } from "./AudioPlayer";
-import { FileText, Clock, Mic, Music, Calendar } from "lucide-react";
+import { FileText, Clock, Mic, Music, Calendar, Trash2 } from "lucide-react";
 import { format } from "date-fns";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 interface AdCardProps {
   ad: AdResponse;
 }
 
 export function AdCard({ ad }: AdCardProps) {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const deleteAd = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/ads/${ad.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error("Failed to delete ad");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.ads.list.path] });
+      toast({ title: "Ad deleted", description: "The ad has been removed from your library." });
+    },
+  });
+
   return (
-    <div className="glass-card rounded-2xl overflow-hidden flex flex-col group">
+    <div className="glass-card rounded-2xl overflow-hidden flex flex-col group relative">
+      <button 
+        onClick={() => deleteAd.mutate()}
+        disabled={deleteAd.isPending}
+        className="absolute top-4 right-4 p-2 rounded-lg bg-background/50 hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all opacity-0 group-hover:opacity-100 z-10"
+        title="Delete Ad"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
       <div className="p-6 border-b border-border/50 bg-secondary/20">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">

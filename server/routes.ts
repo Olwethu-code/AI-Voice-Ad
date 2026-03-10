@@ -153,5 +153,15 @@ export async function registerRoutes(
     }
   });
 
+  app.delete(api.ads.delete.path, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteAd(id);
+      res.status(204).send();
+    } catch (e) {
+      res.status(500).json({ message: "Failed to delete ad" });
+    }
+  });
+
   return httpServer;
 }

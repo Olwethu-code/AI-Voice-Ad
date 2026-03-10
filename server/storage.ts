@@ -6,6 +6,7 @@ export interface IStorage {
   getAds(): Promise<AdResponse[]>;
   getAd(id: number): Promise<AdResponse | undefined>;
   createAd(ad: Omit<typeof ads.$inferInsert, "id" | "createdAt">): Promise<AdResponse>;
+  deleteAd(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -21,6 +22,10 @@ export class DatabaseStorage implements IStorage {
   async createAd(insertAd: Omit<typeof ads.$inferInsert, "id" | "createdAt">): Promise<AdResponse> {
     const [ad] = await db.insert(ads).values(insertAd).returning();
     return ad;
+  }
+
+  async deleteAd(id: number): Promise<void> {
+    await db.delete(ads).where(eq(ads.id, id));
   }
 }
 
