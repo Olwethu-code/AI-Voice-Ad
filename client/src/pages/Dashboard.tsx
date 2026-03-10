@@ -12,7 +12,8 @@ import {
   Mic, 
   Music, 
   Activity,
-  History
+  History,
+  FileText
 } from "lucide-react";
 import { type CreateAdRequest } from "@shared/routes";
 
