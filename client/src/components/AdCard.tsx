@@ -10,7 +10,7 @@ interface AdCardProps {
   ad: AdResponse;
 }
 
-export function AdCard({ ad }: AdCardProps) {
+export function AdCard({ ad, compact = false }: AdCardProps & { compact?: boolean }) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -24,6 +24,38 @@ export function AdCard({ ad }: AdCardProps) {
       toast({ title: "Ad deleted", description: "The ad has been removed from your library." });
     },
   });
+
+  if (compact) {
+    return (
+      <div className="glass-card rounded-xl overflow-hidden flex flex-col group relative border border-white/5 bg-secondary/10">
+        <button 
+          onClick={(e) => { e.stopPropagation(); deleteAd.mutate(); }}
+          disabled={deleteAd.isPending}
+          className="absolute top-2 right-2 p-1.5 rounded-lg bg-background/50 hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all opacity-0 group-hover:opacity-100 z-10"
+          title="Delete Ad"
+        >
+          <Trash2 className="w-3 h-3" />
+        </button>
+        <div className="p-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-[10px] font-medium text-muted-foreground">
+              <Calendar className="w-3 h-3" />
+              {ad.createdAt ? format(new Date(ad.createdAt), "MMM d") : 'Recently'}
+            </div>
+            <span className="px-1.5 py-0.5 bg-background rounded-full text-[10px] font-semibold text-primary border border-border">
+              {ad.duration}s
+            </span>
+          </div>
+          <div className="mb-2">
+            <AudioPlayer url={ad.finalAudioUrl!} title={`Ad ${ad.id}`} compact />
+          </div>
+          <p className="text-[10px] text-muted-foreground line-clamp-2 italic">
+            "{ad.inputText || ad.generatedScript?.substring(0, 50)}..."
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="glass-card rounded-2xl overflow-hidden flex flex-col group relative">

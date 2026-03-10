@@ -5,9 +5,10 @@ import { motion } from "framer-motion";
 interface AudioPlayerProps {
   url: string;
   title?: string;
+  compact?: boolean;
 }
 
-export function AudioPlayer({ url, title = "Generated Ad Audio" }: AudioPlayerProps) {
+export function AudioPlayer({ url, title = "Generated Ad Audio", compact = false }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -74,6 +75,39 @@ export function AudioPlayer({ url, title = "Generated Ad Audio" }: AudioPlayerPr
     a.click();
     document.body.removeChild(a);
   };
+
+  if (compact) {
+    return (
+      <div className="bg-secondary/30 rounded-xl p-3 border border-border/30 backdrop-blur-sm">
+        <audio ref={audioRef} src={url} className="hidden" />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={togglePlay}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground p-2 rounded-full shadow-lg hover:scale-105 transition-all active:scale-95"
+          >
+            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 translate-x-px" />}
+          </button>
+          <div className="flex-1 min-w-0">
+            <div className="h-1.5 bg-black/40 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-primary" 
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ type: "spring", bounce: 0, duration: 0.1 }}
+              />
+            </div>
+          </div>
+          <button
+            onClick={handleDownload}
+            className="text-muted-foreground hover:text-primary transition-colors p-1.5 hover:bg-primary/10 rounded-lg"
+            title="Download"
+          >
+            <Download className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-secondary/50 rounded-2xl p-6 border border-border/50 shadow-inner">
