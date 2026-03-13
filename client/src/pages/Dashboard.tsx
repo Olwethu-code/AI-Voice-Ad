@@ -21,12 +21,8 @@ import { type CreateAdRequest } from "@shared/routes";
 
 const DURATION_OPTIONS = [15, 30, 60];
 const VOICE_STYLES = [
-  "Male", 
-  "Energetic promotional voice", 
-];
-const MUSIC_STYLES = [
-  "Calm background", 
-  "Energetic commercial", 
+  "Energetic promotional voice",
+  "Calm",
 ];
 
 export default function Dashboard() {
@@ -38,7 +34,6 @@ export default function Dashboard() {
   const [base64Image, setBase64Image] = useState<string | undefined>();
   const [duration, setDuration] = useState(30);
   const [voiceStyle, setVoiceStyle] = useState(VOICE_STYLES[0]);
-  const [musicStyle, setMusicStyle] = useState(MUSIC_STYLES[0]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const textInputRef = React.useRef<HTMLDivElement>(null);
@@ -72,7 +67,6 @@ export default function Dashboard() {
 
     const payload: CreateAdRequest = {
       voiceStyle,
-      musicStyle,
       duration,
     };
 
@@ -116,22 +110,7 @@ export default function Dashboard() {
             </button>
           </div>
 
-          <nav className="space-y-1 mb-8">
-            <button 
-              onClick={() => { setInputType("text"); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-medium ${inputType === 'text' ? 'bg-primary/10 text-primary border border-primary/20' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
-            >
-              <Type className="w-4 h-4" /> Promotional text
-            </button>
-            <button 
-              onClick={() => { setInputType("image"); setSidebarOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-medium ${inputType === 'image' ? 'bg-accent/10 text-accent border border-accent/20' : 'text-muted-foreground hover:text-foreground hover:bg-secondary'}`}
-            >
-              <ImageIcon className="w-4 h-4" /> Upload image
-            </button>
-          </nav>
-
-          <div className="pt-6 border-t border-border flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col min-h-0">
             <div className="flex items-center justify-between px-2 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-1 h-4 bg-primary rounded-full" />
@@ -290,25 +269,6 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="space-y-4 md:col-span-2">
-                    <label className="text-sm font-semibold flex items-center gap-2 text-foreground ml-1">
-                      <Music className="w-4 h-4 text-pink-500" /> Background Music
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={musicStyle}
-                        onChange={(e) => setMusicStyle(e.target.value)}
-                        className="w-full appearance-none bg-black/40 border-2 border-border rounded-xl py-3 pl-4 pr-10 text-foreground font-semibold focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all cursor-pointer"
-                      >
-                        {MUSIC_STYLES.map((style) => (
-                          <option key={style} value={style} className="bg-card text-foreground">{style}</option>
-                        ))}
-                      </select>
-                      <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-muted-foreground">
-                        <X className="w-4 h-4 rotate-45" />
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <button

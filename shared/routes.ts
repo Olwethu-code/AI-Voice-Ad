@@ -27,7 +27,7 @@ export const api = {
         inputText: z.string().optional(),
         image: z.string().optional(), // base64 image representation
         voiceStyle: z.string(),
-        musicStyle: z.string(),
+        musicStyle: z.string().optional(),
         duration: z.coerce.number()
       }),
       responses: {

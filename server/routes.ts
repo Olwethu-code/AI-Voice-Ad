@@ -110,7 +110,7 @@ export async function registerRoutes(
         inputText: extractedText,
         generatedScript,
         voiceStyle: input.voiceStyle,
-        musicStyle: input.musicStyle,
+        musicStyle: input.musicStyle || "None",
         duration: input.duration,
         finalAudioUrl: null // We will just store the audio data locally or return as base64
       });
