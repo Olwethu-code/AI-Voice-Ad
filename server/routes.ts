@@ -69,6 +69,7 @@ export async function registerRoutes(
       Convert the following promotional text into a professional radio-style advertisement script.
       Duration: ~${input.duration} seconds.
       Make it engaging and appropriate for a commercial.
+      IMPORTANT: Output ONLY the spoken words. Do NOT include any bracketed stage directions, sound effect notes, music cues, or any instructions in square brackets (e.g. [Music Playing], [Upbeat Music], [Sound Effect], etc.). The script must contain only the actual words to be spoken aloud.
       
       Input text:
       "${extractedText}"
@@ -79,7 +80,9 @@ export async function registerRoutes(
         messages: [{ role: "user", content: scriptPrompt }]
       });
 
-      const generatedScript = scriptResponse.choices[0]?.message?.content || extractedText;
+      const rawScript = scriptResponse.choices[0]?.message?.content || extractedText;
+      // Strip any bracketed stage directions that may have slipped through (e.g. [Music Playing])
+      const generatedScript = rawScript.replace(/\[.*?\]/g, "").replace(/\n{3,}/g, "\n\n").trim();
 
       // Step 3: Generate Voice Audio
       // Map voice styles to OpenAI voices:
@@ -97,7 +100,7 @@ export async function registerRoutes(
         modalities: ["text", "audio"],
         audio: { voice: voiceId, format: "mp3" },
         messages: [
-          { role: "system", content: "You are a professional radio advertisement voiceover artist. Read the text enthusiastically." },
+          { role: "system", content: "You are a professional radio advertisement voiceover artist. Read only the spoken words of the script exactly as written, with energy and conviction. Do not say anything else." },
           { role: "user", content: generatedScript }
         ]
       });
