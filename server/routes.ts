@@ -81,8 +81,12 @@ export async function registerRoutes(
       });
 
       const rawScript = scriptResponse.choices[0]?.message?.content || extractedText;
-      // Strip any bracketed stage directions that may have slipped through (e.g. [Music Playing])
-      const generatedScript = rawScript.replace(/\[.*?\]/g, "").replace(/\n{3,}/g, "\n\n").trim();
+      // Strip ALL bracketed content (stage directions, music cues, sound effects, etc.)
+      // Handles single-line and multi-line brackets
+      const generatedScript = rawScript
+        .replace(/\[[\s\S]*?\]/g, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
 
       // Step 3: Generate Voice Audio
       // Map voice styles to OpenAI voices:
@@ -100,7 +104,7 @@ export async function registerRoutes(
         modalities: ["text", "audio"],
         audio: { voice: voiceId, format: "mp3" },
         messages: [
-          { role: "system", content: "You are a professional radio advertisement voiceover artist. Read only the spoken words of the script exactly as written, with energy and conviction. Do not say anything else." },
+          { role: "system", content: "You are a professional radio advertisement voiceover artist. Read the script exactly as written — only the dialogue and narration. Do NOT read or say any text inside square brackets [ ]. Ignore all stage directions, music cues, or bracketed notes entirely. Only speak the words intended to be heard aloud." },
           { role: "user", content: generatedScript }
         ]
       });
