@@ -1,6 +1,6 @@
 # AI Voice AD
 
-# This is a eb application that uses Artificial Intelligence to convert promotional text or images into a professional advertisement with voice audio.
+# This is a web application that uses Artificial Intelligence to convert promotional text or images into a professional advertisement with voice audio.
 
 This platform is for bussinesses want to advertise their products, but they do not have skills or enough money to create professional advert.
 
@@ -25,6 +25,6 @@ PostgresSQL for the database
 
 Artificial Intelligence models to generate scripts and audio.
 
-# Demostration Link,
+# Demostration Link
 
 # https://promo-voice-ad-1--olwethumadubel1.replit.app #
